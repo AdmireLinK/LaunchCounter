@@ -1,0 +1,27 @@
+name: launch_counter_frontend
+description: "A new Flutter project."
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_secure_storage: ^9.2.4
+  http: ^1.4.0
+  provider: ^6.1.5
+  shared_preferences: ^2.5.3
+  web_socket_channel: ^3.0.3
+  jwt_decoder: ^2.0.1
+  permission_handler: ^12.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/rocket_icon.png

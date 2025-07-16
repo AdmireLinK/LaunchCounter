@@ -1,0 +1,9 @@
+{
+  "server_port": 54088,
+  "db_host": "localhost",
+  "db_port": 3306,
+  "db_user": "launch_counter",
+  "db_password": "Jj2hNAAak3wMDEid",
+  "db_name": "launch_counter_db",
+  "jwt_secret_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+}
