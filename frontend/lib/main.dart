@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'services/storage_service.dart';
-import 'config/server_config.dart'; // 导入 ServerConfig
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // 打印服务器配置
-  ServerConfig.printConfig();
   
   final prefs = await SharedPreferences.getInstance();
   final storageService = StorageService(prefs);

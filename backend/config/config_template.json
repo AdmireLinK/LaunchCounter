@@ -1,0 +1,10 @@
+{
+  "server_port": 12345,
+  "db_host": "localhost",
+  "db_port": 3306,
+  "db_user": "launch_counter",
+  "db_password": "password_here",
+  "db_name": "launch_counter_db",
+  "jwt_secret_key": "generate_your_own_jwt_secret_key_here",
+  "env": "release"
+}

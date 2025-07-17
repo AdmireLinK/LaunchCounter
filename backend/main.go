@@ -35,6 +35,7 @@ func main() {
 	models.LoadConfig("config/config.json", &config)
 
 	// 设置Gin运行模式
+	// 根据配置文件中的环境变量，设置 Gin 框架的运行模式，开发环境使用调试模式，其他使用生产模式。
 	if config.Env == "dev" {
 		gin.SetMode(gin.DebugMode)
 	} else {
@@ -44,6 +45,7 @@ func main() {
 	// 防止因配置文件中可能存在的空白字符影响 JWT 验证
 	config.JWTSecretKey = strings.TrimSpace(config.JWTSecretKey)
     // 开发环境输出密钥信息
+	// 在开发环境下，打印 JWT 密钥及其哈希值，方便调试。
 	if config.Env == "dev" {
 		log.Printf("JWT密钥: '%s' (长度: %d)", config.JWTSecretKey, len(config.JWTSecretKey))
 		// 计算并打印密钥哈希
@@ -63,11 +65,11 @@ func main() {
     // 设置Gin路由
     // 创建一个默认的 Gin 引擎，包含日志和恢复中间件。
     router := gin.Default()
-	// 设置信任的代理，nil 表示不信任任何代理，直接获取客户端真实 IP
+	// 设置信任的代理，仅信任 127.0.0.1 作为代理，直接获取客户端真实 IP
 	router.SetTrustedProxies([]string{"127.0.0.1"})
 
 	// 添加健康检查端点
-    // 注册一个 GET 请求的健康检查端点，返回服务器状态和当前时间。
+    // 注册一个 GET 请求的健康检查端点，返回服务器状态和当前时间，用于检查服务器是否正常运行。
     router.GET("/health", func(c *gin.Context) {
         c.JSON(http.StatusOK, gin.H{
             "status": "ok",
@@ -76,22 +78,21 @@ func main() {
     })
 
     // 用户认证相关路由
-    // 注册用户注册和登录的 POST 请求路由，分别调用对应的处理函数。
-    router.POST("/register", handlers.RegisterHandler(db, &config))
-    router.POST("/login", handlers.LoginHandler(db, &config))
+    // 注册用户注册和登录的 POST 请求路由，调用对应的处理函数处理认证请求。
+    router.POST("/auth", handlers.AuthHandler(db, &config))
     
     // 需要认证的路由组
     // 创建一个路由组，应用 JWT 认证中间件，只有通过认证的请求才能访问该组内的路由。
     authGroup := router.Group("/")
     authGroup.Use(handlers.AuthMiddleware(&config)) // 应用JWT认证中间件
     {
-        // 注册同步数据的 GET 和 POST 请求路由，分别调用对应的处理函数。
+        // 注册同步数据的 GET 和 POST 请求路由，分别调用对应的处理函数，用于获取和提交同步数据。
         authGroup.GET("/sync", handlers.GetSyncDataHandler(db, &config))
         authGroup.POST("/sync", handlers.PostSyncDataHandler(db, &config))
     }
     
     // WebSocket 单独处理，不使用认证中间件
-    // 注册 WebSocket 连接的 GET 请求路由，调用对应的处理函数。
+    // 注册 WebSocket 连接的 GET 请求路由，调用对应的处理函数处理 WebSocket 连接请求。
     router.GET("/ws", handlers.WebSocketHandler(db, &config))
 
 	// 添加调试路由
@@ -145,19 +146,23 @@ func initDB() {
 		config.DBUser, config.DBPassword, config.DBHost, config.DBPort, config.DBName)
 
 	var err error
-	// 使用 sql.Open 函数创建一个数据库连接池，此时并未实际连接数据库
+	// 使用 sql.Open 函数创建一个数据库连接池，该函数不会立即建立实际的数据库连接，
+	// 而是初始化一个连接池，后续可复用连接以提高性能。
 	db, err = sql.Open("mysql", dsn)
 	if err != nil {
-		// 若创建连接池失败，打印错误信息并终止程序
+		// 若创建连接池失败，打印错误信息并使用 log.Fatalf 终止程序，
+		// 因为数据库连接失败会导致程序无法正常工作。
 		log.Fatalf("数据库连接失败: %v", err)
 	}
 
-	// 使用 db.Ping 方法尝试与数据库建立实际连接，验证连接是否有效
+	// 使用 db.Ping 方法尝试与数据库建立实际连接，验证连接池是否能正常连接到数据库。
+	// 该操作会发送一个简单的请求到数据库服务器，若成功则表示连接有效。
 	if err := db.Ping(); err != nil {
-		// 若连接测试失败，打印错误信息并终止程序
+		// 若连接测试失败，打印错误信息并使用 log.Fatalf 终止程序，
+		// 确保程序不会在无法连接数据库的情况下继续运行。
 		log.Fatalf("数据库连接测试失败: %v", err)
 	}
 
-	// 调用 handlers 包中的 CreateTables 函数，在数据库中创建必要的表
+	// 调用 handlers 包中的 CreateTables 函数，在数据库中创建程序运行所需的表。
 	handlers.CreateTables(db)
 }

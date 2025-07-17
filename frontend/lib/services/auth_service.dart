@@ -11,8 +11,8 @@ class AuthService {
 
   AuthService(this.storageService);
 
-  Future<String?> registerOrLogin(String username, String password, bool isLogin) async {
-    final url = isLogin ? ServerConfig.getLoginUrl() : ServerConfig.getRegisterUrl();
+  Future<String?> unifiedAuth(String username, String password) async {
+    final url = ServerConfig.getUnifiedAuthUrl();
     print("请求URL: $url");
 
     try {

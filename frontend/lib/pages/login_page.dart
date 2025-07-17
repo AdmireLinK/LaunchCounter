@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isLogin = true;
+  
   bool _isLoading = false;
   String? _errorMessage;
 
@@ -91,26 +91,12 @@ class _LoginPageState extends State<LoginPage> {
                           backgroundColor: ThemeService.getButtonColor(context),
                         ),
                         child: Text(
-                          _isLogin ? '登录' : '注册',
+                          '开始使用',
                           style: TextStyle(fontSize: 18),
                         ),
                       ),
                     ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    _isLogin = !_isLogin;
-                    _errorMessage = null;
-                  });
-                },
-                child: Text(
-                  _isLogin ? '没有账号？立即注册' : '已有账号？立即登录',
-                  style: TextStyle(
-                    color: ThemeService.getButtonColor(context),
-                    fontSize: 16,
-                  ),
-                ),
-              ),
+
             ],
           ),
         ),
@@ -126,10 +112,9 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       final authService = AuthService(widget.storageService);
-      final error = await authService.registerOrLogin(
+      final error = await authService.unifiedAuth(
         _usernameController.text,
-        _passwordController.text,
-        _isLogin,
+        _passwordController.text
       );
 
       setState(() {
