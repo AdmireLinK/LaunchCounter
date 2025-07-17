@@ -12,11 +12,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-var upgrader = websocket.Upgrader{
-	CheckOrigin: func(r *http.Request) bool {
-		return true // 允许所有跨域请求
-	},
-}
+
 
 func WebSocketHandler(db *sql.DB, config *models.Config) gin.HandlerFunc {
     return func(c *gin.Context) {
@@ -30,7 +26,9 @@ func WebSocketHandler(db *sql.DB, config *models.Config) gin.HandlerFunc {
 
 
         
-        log.Printf("收到WebSocket连接请求，token: %s", tokenString)
+        if config.Env != "release" {
+            log.Printf("收到WebSocket连接请求，token: %s", tokenString)
+        }
 
         // 验证 token
         token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
@@ -39,9 +37,22 @@ func WebSocketHandler(db *sql.DB, config *models.Config) gin.HandlerFunc {
             }
             return []byte(config.JWTSecretKey), nil
         })
+        
+        if err != nil {
+            if config.Env == "dev" {
+                log.Printf("JWT验证失败: %v", err)
+            }
+            c.JSON(http.StatusUnauthorized, gin.H{"error": "无效的认证令牌"})
+            return
+        }
 
 
-        // 删除重复的JWT解析代码
+        upgrader := websocket.Upgrader{
+            CheckOrigin: func(r *http.Request) bool {
+                // 允许来自任何来源的 WebSocket 连接
+                return true
+            },
+        }
 
         // 从 token 获取用户 ID
         claims, ok := token.Claims.(jwt.MapClaims)
@@ -91,25 +102,29 @@ func WebSocketHandler(db *sql.DB, config *models.Config) gin.HandlerFunc {
             Send:      make(chan models.LaunchData, 256),
         }
 
-        registerClient(client)
-        defer unregisterClient(client)
+        registerClient(client, config)
+        defer unregisterClient(client, config)
 
         go client.WritePump()
         client.ReadPump()
         
-        log.Printf("用户 %s (%d) WebSocket连接已建立", username, int(userIDInt))
+        if config.Env == "dev" {
+            log.Printf("用户 %s (%d) WebSocket连接已建立", username, int(userIDInt))
+        }
     }
 }
 
-func registerClient(client *models.Client) {
+func registerClient(client *models.Client, config *models.Config) {
 	models.ClientsLock.Lock()
 	defer models.ClientsLock.Unlock()
 
 	models.Clients[client.UserID] = append(models.Clients[client.UserID], client)
-	log.Printf("用户 %s (%d) 已连接, IP: %s", client.Username, client.UserID, client.IP)
+	if config.Env == "dev" {
+		log.Printf("用户 %s (%d) 已连接, IP: %s", client.Username, client.UserID, client.IP)
+	}
 }
 
-func unregisterClient(client *models.Client) {
+func unregisterClient(client *models.Client, config *models.Config) {
 	models.ClientsLock.Lock()
 	defer models.ClientsLock.Unlock()
 
@@ -123,5 +138,7 @@ func unregisterClient(client *models.Client) {
 
 	close(client.Send)
 	client.Conn.Close()
-	log.Printf("用户 %s (%d) 已断开连接", client.Username, client.UserID)
+	if config.Env == "dev" {
+		log.Printf("用户 %s (%d) 已断开连接", client.Username, client.UserID)
+	}
 }
