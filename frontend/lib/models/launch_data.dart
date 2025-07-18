@@ -50,7 +50,6 @@ Map<String, dynamic> toJson() {
   };
 }
 
-  // 添加 copyWith 方法
   LaunchData copyWith({
     int? userId,
     int? total,

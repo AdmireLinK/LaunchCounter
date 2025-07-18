@@ -7,7 +7,7 @@ class StorageService {
   static const _tokenKey = 'auth_token';
   static const _launchDataKey = 'launch_data';
   static const _usernameKey = 'username';
-  static const _userIdKey = 'user_id'; // 新增用户ID键
+  static const _userIdKey = 'user_id'; 
 
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
   final SharedPreferences _prefs;
@@ -23,7 +23,6 @@ class StorageService {
   }
 
   Future<void> saveToken(String token) async {
-  // 确保令牌正确存储
   token = token.trim();
   await _secureStorage.write(key: _tokenKey, value: token);
   }

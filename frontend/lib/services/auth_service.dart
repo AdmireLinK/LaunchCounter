@@ -46,6 +46,4 @@ class AuthService {
       return '网络连接失败';
     }
   }
-  
-  // 删除未使用的 _getUserIdFromToken 方法
 }

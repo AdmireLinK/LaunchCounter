@@ -1,14 +1,14 @@
-import 'dart:async'; // 添加 Timer 所需的包
+import 'dart:async'; 
 import 'package:flutter/material.dart';
 import '../services/sync_service.dart';
 import '../services/storage_service.dart';
 import '../models/launch_data.dart';
 import '../widgets/stats_panel.dart';
-import '../widgets/launch_button.dart'; // 导入 LaunchButton
+import '../widgets/launch_button.dart'; 
 import '../widgets/sync_indicator.dart';
 import '../services/theme_service.dart';
 import '../utils/time_utils.dart';
-import '../app.dart'; // 导入 App
+import '../app.dart'; 
 
 class MainPage extends StatefulWidget {
   final StorageService storageService;

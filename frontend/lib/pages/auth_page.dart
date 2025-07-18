@@ -4,16 +4,16 @@ import '../services/storage_service.dart';
 import '../app.dart';
 import '../services/theme_service.dart';
 
-class LoginPage extends StatefulWidget {
+class AuthPage extends StatefulWidget {
   final StorageService storageService;
 
-  const LoginPage({Key? key, required this.storageService}) : super(key: key);
+  const AuthPage({Key? key, required this.storageService}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _AuthPageState createState() => _AuthPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _AuthPageState extends State<AuthPage> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();

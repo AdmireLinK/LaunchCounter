@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pages/login_page.dart';
+import 'pages/auth_page.dart';
 import 'pages/main_page.dart';
 import 'services/storage_service.dart';
 
@@ -38,6 +38,6 @@ class _AppState extends State<App> {
 
     return _isAuthenticated
         ? MainPage(storageService: widget.storageService)
-        : LoginPage(storageService: widget.storageService);
+        : AuthPage(storageService: widget.storageService);
   }
 }
