@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="launch_counter_frontend"
+        android:label="发射计数器"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

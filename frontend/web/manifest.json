@@ -1,6 +1,6 @@
 {
-    "name": "launch_counter_frontend",
-    "short_name": "launch_counter_frontend",
+    "name": "发射计数器",
+    "short_name": "发射计数器",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
