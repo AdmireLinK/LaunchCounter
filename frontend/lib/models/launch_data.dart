@@ -1,11 +1,18 @@
 class LaunchData {
-  final int userId; // 使用 final 确保不可变
+  /// 用户唯一标识（不可变）
+  final int userId;
+  /// 总发射次数统计
   int total;
+  /// 按年份统计的发射记录（格式：年份字符串 -> 次数）
   Map<String, int> yearData;
+  /// 按月统计的发射记录（格式：年-月 -> 次数）
   Map<String, int> monthData;
+  /// 按日统计的发射记录（格式：年-月-日 -> 次数）
   Map<String, int> dayData;
+  /// 最后一次发射时间
   DateTime lastLaunch;
 
+  /// 主构造函数 - 所有参数均为必需参数
   LaunchData({
     required this.userId,
     required this.total,
@@ -15,6 +22,7 @@ class LaunchData {
     required this.lastLaunch,
   });
 
+  /// 创建空数据对象的工厂方法
   factory LaunchData.empty() {
     return LaunchData(
       userId: 0,
@@ -26,6 +34,7 @@ class LaunchData {
     );
   }
 
+  /// 从 JSON 数据解析的工厂方法
   factory LaunchData.fromJson(Map<String, dynamic> json) {
     return LaunchData(
       userId: json['user_id'] is int ? json['user_id'] : int.tryParse(json['user_id']?.toString() ?? '0') ?? 0,
@@ -39,8 +48,9 @@ class LaunchData {
     );
   }
 
-Map<String, dynamic> toJson() {
-  return {
+  /// 转换为 JSON 格式（用于持久化存储）
+  Map<String, dynamic> toJson() {
+    return {
     'user_id': userId,
     'total': total,
     'year_data': yearData,
@@ -50,6 +60,7 @@ Map<String, dynamic> toJson() {
   };
 }
 
+  /// 对象复制方法（支持部分属性覆盖）
   LaunchData copyWith({
     int? userId,
     int? total,
@@ -68,6 +79,7 @@ Map<String, dynamic> toJson() {
     );
   }
 
+  /// 增加发射次数（更新所有统计维度）
   void increment() {
     final now = DateTime.now();
     total++;
@@ -77,6 +89,7 @@ Map<String, dynamic> toJson() {
     lastLaunch = now;
   }
 
+  /// 私有方法：更新指定统计维度的计数器
   void _updateCounter(Map<String, int> map, String key) {
     map[key] = (map[key] ?? 0) + 1;
   }
