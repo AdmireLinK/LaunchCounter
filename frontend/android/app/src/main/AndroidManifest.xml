@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.admirelink.launchcounter">
     <application
         android:label="发射计数器"
         android:name="${applicationName}"

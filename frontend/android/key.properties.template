@@ -1,0 +1,4 @@
+storePassword=password
+keyPassword=password
+keyAlias=launchcounter
+storeFile=./app/launchcounter.jks
