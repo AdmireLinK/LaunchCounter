@@ -14,6 +14,6 @@ class ThemeService {
   }
 
   static Color getButtonColor(BuildContext context) {
-    return isDarkMode(context) ? Colors.blue[800]! : const Color(0xFF66CCFF);
+    return isDarkMode(context) ? const Color(0xFF66CCFF) : const Color(0xFF66CCFF);
   }
 }

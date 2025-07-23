@@ -58,7 +58,7 @@ class _AuthPageState extends State<AuthPage> {
                 decoration: InputDecoration(
                   labelText: '用户名',
                   prefixIcon: Icon(Icons.person),
-                  border: OutlineInputBorder(),
+                  border: UnderlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -73,7 +73,7 @@ class _AuthPageState extends State<AuthPage> {
                 decoration: InputDecoration(
                   labelText: '密码',
                   prefixIcon: Icon(Icons.lock),
-                  border: OutlineInputBorder(),
+                  border: UnderlineInputBorder(),
                 ),
                 obscureText: true,
                 validator: (value) {
@@ -101,7 +101,7 @@ class _AuthPageState extends State<AuthPage> {
                           backgroundColor: ThemeService.getButtonColor(context),
                         ),
                         child: Text(
-                          '开始使用',
+                          '开始发射',
                           style: TextStyle(fontSize: 18),
                         ),
                       ),
