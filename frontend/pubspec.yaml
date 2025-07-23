@@ -1,4 +1,4 @@
-name: launch_counter_frontend
+name: launchcounter
 description: "Count your launch times with ease."
 
 version: 0.0.1
@@ -23,3 +23,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: HarmonyOS_Sans_SC
+      fonts:
+        - asset: ./fonts/HarmonyOS_Sans_SC.ttf

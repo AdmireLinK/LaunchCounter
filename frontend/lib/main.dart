@@ -22,8 +22,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '发射计数器',
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+      theme: ThemeData.light().copyWith(
+        textTheme: ThemeData.light().textTheme.apply(
+          fontFamily: 'HarmonyOS_Sans_SC',
+        ),
+      ),
+      darkTheme: ThemeData.dark().copyWith(
+        textTheme: ThemeData.dark().textTheme.apply(
+          fontFamily: 'HarmonyOS_Sans_SC',
+        ),
+      ),
       themeMode: ThemeMode.system,
       home: App(storageService: storageService),
       debugShowCheckedModeBanner: false,
