@@ -7,7 +7,6 @@ import '../widgets/stats_panel.dart';
 import '../widgets/launch_button.dart'; 
 import '../widgets/sync_indicator.dart';
 import '../services/theme_service.dart';
-import '../utils/time_utils.dart';
 import '../app.dart'; 
 
 class MainPage extends StatefulWidget {
@@ -151,24 +150,7 @@ class _MainPageState extends State<MainPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   StatsPanel(data: _launchData),
-                  const SizedBox(height: 30),
-                  Text(
-                    '发射统计',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: ThemeService.getTextColor(context),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  _buildStatCard('今日', _launchData.dayData[TimeUtils.getTodayKey()] ?? 0),
-                  const SizedBox(height: 10),
-                  _buildStatCard('本月', _launchData.monthData[TimeUtils.getThisMonthKey()] ?? 0),
-                  const SizedBox(height: 10),
-                  _buildStatCard('今年', _launchData.yearData[TimeUtils.getThisYearKey()] ?? 0),
-                  const SizedBox(height: 10),
-                  _buildStatCard('总计', _launchData.total),
-                  const SizedBox(height: 80),
+
                 ],
               ),
             ),
@@ -192,34 +174,4 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget _buildStatCard(String title, int count) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: ThemeService.getTextColor(context),
-              ),
-            ),
-            Text(
-              '$count',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: ThemeService.getButtonColor(context),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
