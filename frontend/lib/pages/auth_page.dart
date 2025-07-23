@@ -102,7 +102,10 @@ class _AuthPageState extends State<AuthPage> {
                         ),
                         child: Text(
                           '开始发射',
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ),
